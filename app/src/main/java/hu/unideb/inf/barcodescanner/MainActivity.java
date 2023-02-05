@@ -118,8 +118,7 @@ public class MainActivity extends AppCompatActivity{
         previewUseCase.setSurfaceProvider(previewView.getSurfaceProvider());
 
         try {
-            cameraProvider
-                    .bindToLifecycle(this, cameraSelector, previewUseCase);
+            cameraProvider.bindToLifecycle(this, cameraSelector, previewUseCase);
         } catch (Exception e) {
             Log.e(TAG, "Hiba az előnézet csatlakoztatása közben!", e);
         }
