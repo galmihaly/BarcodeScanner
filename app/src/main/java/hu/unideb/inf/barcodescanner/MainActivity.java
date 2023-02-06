@@ -8,14 +8,24 @@ import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +51,8 @@ public class MainActivity extends AppCompatActivity{
     private Preview previewUseCase;
     private ImageAnalysis analysisUseCase;
     private TextView codeTextView;
+    private ConstraintLayout trackCL;
+    private LinearLayout drawCL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +60,8 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         previewView = findViewById(R.id.previewView);
         codeTextView = findViewById(R.id.codeTextView);
+        trackCL = findViewById(R.id.trackCL);
+        drawCL = findViewById(R.id.drawCL);
     }
 
     @Override
@@ -147,7 +161,9 @@ public class MainActivity extends AppCompatActivity{
         return previewView.getDisplay().getRotation();
     }
 
-    @SuppressLint("UnsafeOptInUsageError")
+
+
+    @SuppressLint({"UnsafeOptInUsageError", "UseCompatLoadingForDrawables"})
     private void analyze(@NonNull ImageProxy image) {
         if (image.getImage() == null) return;
 
@@ -165,7 +181,19 @@ public class MainActivity extends AppCompatActivity{
         barcodeScanner.process(inputImage)
                 .addOnSuccessListener((List<Barcode> barcodes)->{
                     if (barcodes.size() > 0) {
+
+
+
+                        /*Point[] points = barcodes.get(0).getCornerPoints();
+                        BarcodeRectangle barcodeRectangle = new BarcodeRectangle(getApplicationContext(), points);
+                        drawCL.addView(barcodeRectangle);*/
+
+
                         codeTextView.setText(barcodes.get(0).getDisplayValue());
+                        trackCL.setBackground(ResourcesCompat.getDrawable(getResources() ,R.drawable.green_background, null));
+                    }
+                    else {
+                        trackCL.setBackground(getResources().getDrawable(R.drawable.red_background));
                     }
                 })
                 .addOnFailureListener(e ->
@@ -174,5 +202,38 @@ public class MainActivity extends AppCompatActivity{
                 .addOnCompleteListener(task ->
                         image.close()
                 );
+    }
+
+    public class BarcodeRectangle extends View {
+
+        private Point[] points;
+
+        public BarcodeRectangle(Context context, Point[] points){
+            super(context);
+            this.points = points;
+        }
+
+        public Point[] getPoints() {
+            return points;
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+
+            Paint paintLine= new Paint();
+            paintLine.setAntiAlias(true);
+            paintLine.setStyle(Paint.Style.STROKE);
+            paintLine.setColor(Color.TRANSPARENT);
+            canvas.drawPaint(paintLine);
+            paintLine.setColor(Color.parseColor("#FF0000"));
+            paintLine.setStrokeWidth(5);
+
+            Point[] points = this.getPoints();
+
+            for (int i = 0; i < points.length - 1; i++) {
+                canvas.drawLine(points[i].x, points[i].y, points[i + 1].x,points[i + 1].y, paintLine);
+            }
+        }
     }
 }
