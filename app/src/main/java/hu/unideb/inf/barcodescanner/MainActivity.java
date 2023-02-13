@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity{
         imageButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.circle_background));
 
         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(150, 150);
-        lp1.setMargins(40,10, 0, 10);
+        lp1.setMargins(0,10, 0, 10);
 
         imageButton.setLayoutParams(lp1);
 
