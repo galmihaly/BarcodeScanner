@@ -3,11 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Munka/BarcodeScanner/BarcodeScanner/app/src/main/res/drawable/constraint_background.xml" value="0.196" />
-        <entry key="..\:/Munka/BarcodeScanner/BarcodeScanner/app/src/main/res/drawable/constraint_green_background.xml" value="0.196" />
-        <entry key="..\:/Munka/BarcodeScanner/BarcodeScanner/app/src/main/res/drawable/red_background.xml" value="0.2985" />
-        <entry key="..\:/Munka/BarcodeScanner/BarcodeScanner/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Munkahely/BarcodeScanner/app/src/main/res/layout/activity_main.xml" value="0.20652173913043478" />
+        <entry key="..\:/Munkahely/BarcodeScanner/app/src/main/res/drawable/circle_background.xml" value="0.2175" />
+        <entry key="..\:/Munkahely/BarcodeScanner/app/src/main/res/drawable/ic_barcode.xml" value="0.121" />
+        <entry key="..\:/Munkahely/BarcodeScanner/app/src/main/res/drawable/ic_keyboard.xml" value="0.121" />
+        <entry key="..\:/Munkahely/BarcodeScanner/app/src/main/res/drawable/ic_personalcard.xml" value="0.121" />
+        <entry key="..\:/Munkahely/BarcodeScanner/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/Munkahely/BarcodeScanner/app/src/main/res/layout/fragment_camera.xml" value="0.16799999999999998" />
       </map>
     </option>

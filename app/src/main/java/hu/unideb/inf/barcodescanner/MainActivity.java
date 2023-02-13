@@ -9,22 +9,18 @@ import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,8 +47,8 @@ public class MainActivity extends AppCompatActivity{
     private Preview previewUseCase;
     private ImageAnalysis analysisUseCase;
     private TextView codeTextView;
-    private ConstraintLayout trackCL;
-    private LinearLayout drawCL;
+
+    private LinearLayout llay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +56,63 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         previewView = findViewById(R.id.previewView);
         codeTextView = findViewById(R.id.codeTextView);
-        trackCL = findViewById(R.id.trackCL);
-        drawCL = findViewById(R.id.drawCL);
+        llay = findViewById(R.id.cl);
+
+        final ImageButton imageButton = new ImageButton(this);
+        imageButton.setImageResource(R.drawable.ic_barcode);
+        imageButton.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.circle_background));
+
+        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(150, 150);
+        lp1.setMargins(40,10, 0, 10);
+
+        imageButton.setLayoutParams(lp1);
+
+        // Add ImageButton to LinearLayout
+        if (llay != null) {
+            llay.addView(imageButton);
+        }
+
+        final ImageButton imageButton1 = new ImageButton(this);
+        imageButton1.setImageResource(R.drawable.ic_keyboard);
+        imageButton1.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.circle_background));
+
+        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(150, 150);
+        lp2.setMargins(10,10, 0, 10);
+
+        imageButton1.setLayoutParams(lp2);
+
+        // Add ImageButton to LinearLayout
+        if (llay != null) {
+            llay.addView(imageButton1);
+        }
+
+        final ImageButton imageButton2 = new ImageButton(this);
+        imageButton2.setImageResource(R.drawable.ic_personalcard);
+        imageButton2.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.circle_background));
+
+        LinearLayout.LayoutParams lp3 = new LinearLayout.LayoutParams(150, 150);
+        lp3.setMargins(10,10, 0, 10);
+
+        imageButton2.setLayoutParams(lp3);
+
+        // Add ImageButton to LinearLayout
+        if (llay != null) {
+            llay.addView(imageButton2);
+        }
+
+        final ImageButton imageButton3 = new ImageButton(this);
+        imageButton3.setImageResource(R.drawable.ic_barcode);
+        imageButton3.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.circle_background));
+
+        LinearLayout.LayoutParams lp4 = new LinearLayout.LayoutParams(150, 150);
+        lp4.setMargins(10,10, 0, 10);
+
+        imageButton3.setLayoutParams(lp4);
+
+        // Add ImageButton to LinearLayout
+        if (llay != null) {
+            llay.addView(imageButton3);
+        }
     }
 
     @Override
@@ -161,9 +212,7 @@ public class MainActivity extends AppCompatActivity{
         return previewView.getDisplay().getRotation();
     }
 
-
-
-    @SuppressLint({"UnsafeOptInUsageError", "UseCompatLoadingForDrawables"})
+    @SuppressLint("UnsafeOptInUsageError")
     private void analyze(@NonNull ImageProxy image) {
         if (image.getImage() == null) return;
 
@@ -181,19 +230,7 @@ public class MainActivity extends AppCompatActivity{
         barcodeScanner.process(inputImage)
                 .addOnSuccessListener((List<Barcode> barcodes)->{
                     if (barcodes.size() > 0) {
-
-
-
-                        /*Point[] points = barcodes.get(0).getCornerPoints();
-                        BarcodeRectangle barcodeRectangle = new BarcodeRectangle(getApplicationContext(), points);
-                        drawCL.addView(barcodeRectangle);*/
-
-
                         codeTextView.setText(barcodes.get(0).getDisplayValue());
-                        trackCL.setBackground(ResourcesCompat.getDrawable(getResources() ,R.drawable.green_background, null));
-                    }
-                    else {
-                        trackCL.setBackground(getResources().getDrawable(R.drawable.red_background));
                     }
                 })
                 .addOnFailureListener(e ->
@@ -202,38 +239,5 @@ public class MainActivity extends AppCompatActivity{
                 .addOnCompleteListener(task ->
                         image.close()
                 );
-    }
-
-    public class BarcodeRectangle extends View {
-
-        private Point[] points;
-
-        public BarcodeRectangle(Context context, Point[] points){
-            super(context);
-            this.points = points;
-        }
-
-        public Point[] getPoints() {
-            return points;
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
-
-            Paint paintLine= new Paint();
-            paintLine.setAntiAlias(true);
-            paintLine.setStyle(Paint.Style.STROKE);
-            paintLine.setColor(Color.TRANSPARENT);
-            canvas.drawPaint(paintLine);
-            paintLine.setColor(Color.parseColor("#FF0000"));
-            paintLine.setStrokeWidth(5);
-
-            Point[] points = this.getPoints();
-
-            for (int i = 0; i < points.length - 1; i++) {
-                canvas.drawLine(points[i].x, points[i].y, points[i + 1].x,points[i + 1].y, paintLine);
-            }
-        }
     }
 }
